@@ -2,18 +2,6 @@ import React from 'react';
 import { Button, View, Text } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-const AppNavigator = createStackNavigator(
-  {
-    Home: HomeScreen,
-    Details: DetailsScreen
-  },
-  {
-    initialRouteName: 'Home'
-  }
-);
-
-const AppContainer = createAppContainer(AppNavigator);
-
 export default class App extends React.Component {
   render() {
     return <AppContainer />;
@@ -43,3 +31,15 @@ class DetailsScreen extends React.Component {
     );
   }
 }
+
+const AppNavigator = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Details: DetailsScreen
+  },
+  {
+    initialRouteName: 'Home'
+  }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
