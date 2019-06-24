@@ -9,6 +9,8 @@ export default class App extends React.Component {
 }
 
 class HomeScreen extends React.Component {
+  static navigationOptions = { title: 'Home' }
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -28,6 +30,8 @@ class HomeScreen extends React.Component {
 }
 
 class DetailsScreen extends React.Component {
+  static navigationOptions = { title: 'Details' }
+
   render() {
     const { navigation } = this.props;
 
