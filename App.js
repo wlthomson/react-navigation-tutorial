@@ -12,38 +12,46 @@ class HomeScreen extends React.Component {
   static navigationOptions = { title: 'Home' }
 
   render() {
+    const { navigation } = this.props;
+    const { navigate } = navigation;
+
+    const navigateDetails = () => {
+      navigate('Details', {
+        someDetail: 'This is a detail.',
+        anotherDetail: 'This is another detail.'
+      });
+    }
+
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
-        <Button
-          title="Go to Details"
-          onPress={() => {
-            this.props.navigation.navigate('Details', {
-              someDetail: 'This is a detail.',
-              anotherDetail: 'This is another detail.'
-            });
-          }}
-        />
+        <Button title="Go to Details" onPress={navigateDetails}/>
       </View>
     );
   }
 }
 
 class DetailsScreen extends React.Component {
-  static navigationOptions = { title: 'Details' }
+  static navigationOptions = ({ navigation }) => {
+    const { getParam } = navigation
+    return {
+      title: getParam('otherParam', 'A Nested Details Screen')
+    }
+  }
 
   render() {
     const { navigation } = this.props;
+    const { navigate, push, getParam, goBack, setParams } = navigation;
 
-    const someDetail = navigation.getParam(
-      'someDetail',
-      'This is not a detail.'
-    );
+    const someDetail = getParam('someDetail', 'This is not a detail.');
+    const anotherDetail = getParam('anotherDetail', 'This is not a detail.');
 
-    const anotherDetail = navigation.getParam(
-      'anotherDetail',
-      'This is not a detail.'
-    );
+    const navigateHome = () => navigate('Home')
+    const pushDetails = () => push('Details', {
+      someDetail: someDetail.slice().concat(' Again.'),
+      anotherDetail: anotherDetail.slice().concat(' Again.')
+    })
+    const goBack = () => goBack()
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -51,21 +59,16 @@ class DetailsScreen extends React.Component {
         <Text>{JSON.stringify(someDetail)}</Text>
         <Text>{JSON.stringify(anotherDetail)}</Text>
         <Button
-          title="Go to Details... again"
-          onPress={() =>
-            this.props.navigation.push('Details', {
-              someDetail: someDetail.slice().concat(' Again.'),
-              anotherDetail: anotherDetail.slice().concat(' Again.')
-            })
-          }
+          title="Go to Home"
+          onPress={navigateHome}
         />
         <Button
-          title="Go to Home"
-          onPress={() => this.props.navigation.navigate('Home')}
+          title="Go to Details... again"
+          onPress={pushDetails}
         />
         <Button
           title="Go back"
-          onPress={() => this.props.navigation.goBack()}
+          onPress={goBack}
         />
       </View>
     );
