@@ -52,24 +52,17 @@ class DetailsScreen extends React.Component {
       anotherDetail: anotherDetail.slice().concat(' Again.')
     })
     const goBack = () => goBack()
+    const updateTitle = () => setParams({ otherParam: 'Updated!' })
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Details Screen</Text>
         <Text>{JSON.stringify(someDetail)}</Text>
         <Text>{JSON.stringify(anotherDetail)}</Text>
-        <Button
-          title="Go to Home"
-          onPress={navigateHome}
-        />
-        <Button
-          title="Go to Details... again"
-          onPress={pushDetails}
-        />
-        <Button
-          title="Go back"
-          onPress={goBack}
-        />
+        <Button title="Go to Home" onPress={navigateHome}/>
+        <Button title="Go to Details... again" onPress={pushDetails}/>
+        <Button title="Update the title" onPress={updateTitle}/>
+        <Button title="Go back" onPress={goBack}/>
       </View>
     );
   }
