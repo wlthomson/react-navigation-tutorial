@@ -19,7 +19,8 @@ class HomeScreen extends React.Component {
     const navigateDetails = () => {
       navigate("Details", {
         someDetail: "This is a detail.",
-        anotherDetail: "This is another detail."
+        anotherDetail: "This is another detail.",
+        otherParam: "Some other param."
       });
     };
 
@@ -33,10 +34,19 @@ class HomeScreen extends React.Component {
 }
 
 class DetailsScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    const { getParam } = navigation;
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    const { getParam } = navigation
+    const { headerStyle, headerTintColor } = navigationOptions
+    const { backgroundColor } = headerStyle
+
+    const title = getParam("otherParam", "A Nested Details Screen")
+
     return {
-      title: getParam("otherParam", "A Nested Details Screen")
+      title,
+      headerStyle: {
+        backgroundColor: headerTintColor,
+      },
+      headerTintColor: backgroundColor,
     };
   };
 
@@ -47,12 +57,14 @@ class DetailsScreen extends React.Component {
 
     const someDetail = getParam("someDetail", "This is not a detail.");
     const anotherDetail = getParam("anotherDetail", "This is not a detail.");
+    const otherParam = getParam("otherParam", "Some other param.");
 
     const navigateHome = () => navigate("Home");
     const pushDetails = () =>
       push("Details", {
         someDetail: someDetail.slice().concat(" Again."),
-        anotherDetail: anotherDetail.slice().concat(" Again.")
+        anotherDetail: anotherDetail.slice().concat(" Again."),
+        otherParam: otherParam.slice().concat(" Again.")
       });
     const navigateBack = () => goBack();
     const updateTitle = () => setParams({ otherParam: "Updated!" });
@@ -71,17 +83,38 @@ class DetailsScreen extends React.Component {
   }
 }
 
-const AppNavigator = createStackNavigator(
-  { Home: HomeScreen, Details: DetailsScreen },
-  { initialRouteName: "Home" }
-);
-
-const AppContainer = createAppContainer(AppNavigator);
+const colors = {
+  headerBackground: "#f4511e",
+  headerTint: "#fff"
+};
 
 const styles = StyleSheet.create({
   viewStyle: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
+  },
+  headerStyle: {
+    backgroundColor: colors.headerBackground
+  },
+  headerTitleStyle: {
+    fontWeight: "bold"
   }
 });
+
+const AppNavigator = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Details: DetailsScreen
+  },
+  {
+    initialRouteName: "Home",
+    defaultNavigationOptions: {
+      headerStyle: styles.headerStyle,
+      headerTintColor: colors.headerTint,
+      headerTitleStyle: styles.headerTitleStyle
+    }
+  }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
